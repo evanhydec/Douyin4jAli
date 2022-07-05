@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.dao.userDao">
+
+    <sql id="BASE_TABLE">
+        users
+    </sql>
+
+    <sql id="BASE_COLUMNS">
+        uid,username,followCount,followerCount
+    </sql>
+
+    <insert id="createUser" useGeneratedKeys="true" keyProperty="id" keyColumn="uid">
+        INSERT INTO
+            <include refid="BASE_TABLE"></include>
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            username,password,createdAt
+        </trim>
+        <trim prefix="VALUES(" suffix=")" suffixOverrides=",">
+            #{user.name},#{user.passwd},UNIX_TIMESTAMP(NOW()),
+        </trim>
+    </insert>
+
+    <update id="updateUser">
+        UPDATE
+            <include refid="BASE_TABLE"></include>
+        <set>
+            <if test="user.name != null and user.name != ''">
+                username = #{user.name},
+            </if>
+            <if test="user.follow_count != null and user.follow_count != ''">
+                followCount = followCount + #{user.follow_count},
+            </if>
+            <if test="user.follower_count != null and user.follower_count != ''">
+                followerCount = followerCount + #{user.follower_count},
+            </if>
+        </set>
+        WHERE uid = #{user.id}
+    </update>
+
+    <resultMap id="user" type="com.example.DTO.userDto">
+        <id property="id" column="uid"/>
+        <result property="name" column="username"/>
+        <result property="follow_count" column="followCount"/>
+        <result property="follower_count" column="followerCount"/>
+    </resultMap>
+
+    <select id="getUserDtoById" resultMap="user">
+        select
+            <include refid="BASE_COLUMNS"></include>
+        from
+            <include refid="BASE_TABLE"></include>
+        WHERE uid = #{id}
+    </select>
+
+    <select id="getUserDtoByIds" resultMap="user">
+        SELECT *
+        FROM
+        <include refid="BASE_TABLE"></include>
+        WHERE
+        uid
+        IN
+        <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </select>
+
+    <select id="getUserDtoByNameAndPwd" resultMap="user">
+        select
+        <include refid="BASE_COLUMNS"></include>
+        from
+        <include refid="BASE_TABLE"></include>
+        where username = #{name} and password = #{pwd}
+    </select>
+
+
+    <select id="getUserDtoByName" resultMap="user">
+        select
+        <include refid="BASE_COLUMNS"></include>
+        from
+        <include refid="BASE_TABLE"></include>
+        where username = #{name}
+    </select>
+</mapper>

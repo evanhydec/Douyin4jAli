@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.dao.commentDao">
+    <sql id="BASE_TABLE">
+        comments
+    </sql>
+
+    <insert id="createComment" parameterType="com.example.DTO.Cond.commentCond" useGeneratedKeys="true"
+            keyProperty="commentId" keyColumn="id">
+        INSERT INTO
+        <include refid="BASE_TABLE"/>
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            userId,content,videoId,createdAt
+        </trim>
+        <trim prefix="VALUES(" suffix=")" suffixOverrides=",">
+            #{comment.userId},#{comment.content},#{comment.videoId},#{comment.time},
+        </trim>
+    </insert>
+
+    <delete id="deleteCommentById">
+        DELETE FROM
+        <include refid="BASE_TABLE"></include>
+        WHERE
+        id = #{id}
+    </delete>
+
+    <select id="getCommentsByVid" resultType="java.util.Map">
+        select *
+        from
+        <include refid="BASE_TABLE"></include>
+        where
+        videoId = #{vid}
+    </select>
+
+    <select id="getCommentById" resultType="java.util.Map">
+        select *
+        from
+        <include refid="BASE_TABLE"></include>
+        where
+        id = #{cid}
+    </select>
+</mapper>

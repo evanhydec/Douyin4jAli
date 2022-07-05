@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.dao.videoDao">
+
+    <sql id="BASE_TABLE">
+        videos
+    </sql>
+
+    <insert id="createVideo">
+        INSERT INTO
+        <include refid="BASE_TABLE"></include>
+        <trim prefix="(" suffix=")">
+            userId,title,playUrl,coverUrl,createdAt
+        </trim>
+        <trim suffix=")" prefix="VALUES(" suffixOverrides=",">
+            #{video.author},#{video.title},#{video.play_url},#{video.cover_url},UNIX_TIMESTAMP(NOW()),
+        </trim>
+    </insert>
+
+    <update id="updateVideo" parameterType="com.example.DTO.videoDto">
+        UPDATE
+        <include refid="BASE_TABLE"></include>
+        <set>
+            <if test="video.favorite_count != null and video.favorite_count != 0">
+                favoriteCount = favoriteCount + #{video.favorite_count}
+            </if>
+            <if test="video.comment_count != null and video.comment_count != 0">
+                commentCount = commentCount + #{video.comment_count}
+            </if>
+        </set>
+        WHERE
+        id = #{video.id}
+    </update>
+
+
+    <resultMap id="videoDto" type="com.example.DTO.videoDto">
+        <id property="id" column="id"/>
+        <result property="play_url" column="playUrl"/>
+        <result property="cover_url" column="coverUrl"/>
+        <result property="favorite_count" column="favoriteCount"/>
+        <result property="comment_count" column="commentCount"/>
+        <result property="title" column="title"/>
+    </resultMap>
+
+    <select id="getVideosByUid" resultMap="videoDto">
+        SELECT
+        *
+        FROM
+        <include refid="BASE_TABLE"/>
+        WHERE
+        userId = #{id}
+    </select>
+
+    <resultMap id="video" type="com.example.POJO.video">
+        <id property="id" column="id"/>
+        <result property="user_id" column="userId"/>
+        <result property="play_url" column="playUrl"/>
+        <result property="cover_url" column="coverUrl"/>
+        <result property="favorite_count" column="favoriteCount"/>
+        <result property="comment_count" column="commentCount"/>
+        <result property="title" column="title"/>
+    </resultMap>
+
+    <select id="getVideosByTime" resultMap="video">
+        SELECT
+        *
+        FROM
+        <include refid="BASE_TABLE"/>
+        WHERE
+        createdAt &lt; #{time}
+        ORDER BY createdAt desc
+        limit 30
+    </select>
+
+    <select id="getVideosByIds" resultMap="video">
+        SELECT
+        *
+        FROM
+        <include refid="BASE_TABLE"/>
+        WHERE
+        id
+        IN
+        <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </select>
+</mapper>

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.dao.followDao">
+
+    <sql id="BASE_TABLE">
+        follows
+    </sql>
+
+    <insert id="createFollow">
+        INSERT INTO
+            <include refid="BASE_TABLE"></include>
+        <trim prefix="VALUES(" suffix=")">
+            #{follow.follower},#{follow.follow}
+        </trim>
+    </insert>
+
+    <delete id="deleteFollow">
+        DELETE FROM
+            <include refid="BASE_TABLE"></include>
+        WHERE
+            follow_id = #{follow.follow} and follower_id = #{follow.follower}
+    </delete>
+
+    <select id="checkFollow" resultType="Integer">
+        SELECT COUNT(*)
+        FROM
+            <include refid="BASE_TABLE"></include>
+        WHERE
+            follow_id = #{follow.follow} and follower_id = #{follow.follower}
+    </select>
+
+    <select id="getFollowsById" resultType="Integer">
+        SELECT follow_id
+        FROM
+            <include refid="BASE_TABLE"></include>
+        WHERE
+            follower_id = #{id}
+    </select>
+
+    <select id="getFollowersById" resultType="Integer">
+        SELECT follower_id
+        FROM
+            <include refid="BASE_TABLE"></include>
+        WHERE
+            follow_id = #{id}
+    </select>
+
+
+</mapper>

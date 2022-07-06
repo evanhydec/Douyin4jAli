@@ -1,6 +1,6 @@
-package com.example.dao;
+package com.douyin.dao;
 
-import com.example.DTO.Cond.commentCond;
+import com.douyin.DTO.Cond.commentCond;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 

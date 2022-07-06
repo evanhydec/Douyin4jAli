@@ -1,20 +1,18 @@
-package com.example.service.video.impl;
+package com.douyin.service.video.impl;
 
-import com.example.DTO.Cond.favouriteCond;
-import com.example.DTO.Cond.followCond;
-import com.example.DTO.Cond.videoCond;
-import com.example.DTO.userDto;
-import com.example.DTO.videoDto;
-import com.example.POJO.video;
-import com.example.dao.videoDao;
-import com.example.service.favourite.favouriteService;
-import com.example.service.follow.followService;
-import com.example.service.user.userService;
-import com.example.service.video.videoService;
-import com.example.utils.cover;
-import com.sun.scenario.effect.impl.sw.sse.SSEBlend_SRC_OUTPeer;
+import com.douyin.DTO.Cond.favouriteCond;
+import com.douyin.DTO.Cond.followCond;
+import com.douyin.DTO.Cond.videoCond;
+import com.douyin.DTO.userDto;
+import com.douyin.DTO.videoDto;
+import com.douyin.POJO.video;
+import com.douyin.dao.videoDao;
+import com.douyin.service.favourite.favouriteService;
+import com.douyin.service.follow.followService;
+import com.douyin.service.user.userService;
+import com.douyin.service.video.videoService;
+import com.douyin.utils.cover;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ResourceUtils;
 import org.springframework.web.multipart.MultipartFile;
@@ -93,13 +91,21 @@ public class videoServiceImpl implements videoService {
     public List<videoDto> list(Integer uid, Integer token) {
         List<videoDto> videos = videoDao.getVideosByUid(uid);
         userDto author = userService.getUser(uid);
+        if (author != null && author.getId() == 0) {
+            throw new RuntimeException("user服务已降级");
+        }
         String check = followService.checkFollow(new followCond(token, uid));
         if (check.equals("yes")) {
             author.setIs_follow(true);
+        } else if (! check.equals("no")) {
+            throw new RuntimeException("follow服务已降级");
         }
         for (videoDto video : videos) {
-            if (favouriteService.checkFavourite(new favouriteCond(token, video.getId())).equals("yes")) {
+            String msg = favouriteService.checkFavourite(new favouriteCond(token, video.getId()));
+            if (msg.equals("yes")) {
                 video.setIs_favorite(true);
+            } else if (!msg.equals("no")) {
+                throw new RuntimeException("favourite服务已降级");
             }
             video.setAuthor(author);
         }
@@ -113,12 +119,21 @@ public class videoServiceImpl implements videoService {
         for (video video : videos) {
             videoDto temp = new videoDto(video);
             userDto author = userService.getUser(video.getUser_id());
-            if (followService.checkFollow(new followCond(uid, video.getUser_id())).equals("yes")) {
+            if (author != null && author.getId() == 0) {
+                throw new RuntimeException("user服务已降级");
+            }
+            String check = followService.checkFollow(new followCond(uid, video.getUser_id()));
+            if (check.equals("yes")) {
                 author.setIs_follow(true);
+            } else if (! check.equals("no")) {
+                throw new RuntimeException("follow服务已降级");
             }
             temp.setAuthor(author);
-            if (favouriteService.checkFavourite(new favouriteCond(uid, video.getId())).equals("yes")) {
+            String msg = favouriteService.checkFavourite(new favouriteCond(uid, video.getId()));
+            if (msg.equals("yes")) {
                 temp.setIs_favorite(true);
+            } else if (!msg.equals("no")) {
+                throw new RuntimeException("favourite服务已降级");
             }
             res.add(temp);
         }
@@ -132,6 +147,9 @@ public class videoServiceImpl implements videoService {
         for (video video : videos) {
             videoDto temp = new videoDto(video);
             userDto author = userService.getUser(video.getUser_id());
+            if (author != null && author.getId() == 0) {
+                throw new RuntimeException("user服务已降级");
+            }
             temp.setAuthor(author);
             res.add(temp);
         }
@@ -139,7 +157,7 @@ public class videoServiceImpl implements videoService {
     }
 
     @Override
-    public void update(videoDto videoDto) {
-        videoDao.updateVideo(videoDto);
+    public boolean update(videoDto videoDto) {
+        return videoDao.updateVideo(videoDto) == 1;
     }
 }

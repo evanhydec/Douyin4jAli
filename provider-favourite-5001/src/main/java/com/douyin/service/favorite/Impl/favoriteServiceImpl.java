@@ -1,12 +1,12 @@
-package com.example.service.favorite.Impl;
+package com.douyin.service.favorite.Impl;
 
-import com.example.DTO.Cond.favouriteCond;
-import com.example.DTO.Cond.followCond;
-import com.example.DTO.videoDto;
-import com.example.dao.favoriteDao;
-import com.example.service.favorite.favoriteService;
-import com.example.service.follow.followService;
-import com.example.service.video.videoService;
+import com.douyin.DTO.Cond.favouriteCond;
+import com.douyin.DTO.Cond.followCond;
+import com.douyin.DTO.videoDto;
+import com.douyin.dao.favoriteDao;
+import com.douyin.service.favorite.favoriteService;
+import com.douyin.service.follow.followService;
+import com.douyin.service.video.videoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -32,7 +32,9 @@ public class favoriteServiceImpl implements favoriteService {
         if (type.equals("1")) {
             if (favoriteDao.checkFavorite(uid, vid) == 0) {
                 favoriteDao.createFavorite(uid, vid);
-                videoService.updateVideo(videoDto.favorite("1", vid));
+                if (!videoService.updateVideo(videoDto.favorite("1", vid))) {
+                    throw new RuntimeException("video服务已降级");
+                }
             } else {
                 throw new RuntimeException("you have liked the video");
             }
@@ -40,7 +42,9 @@ public class favoriteServiceImpl implements favoriteService {
         }
         if (favoriteDao.checkFavorite(uid, vid) == 1) {
             favoriteDao.deleteFavorite(uid, vid);
-            videoService.updateVideo(videoDto.favorite("2", vid));
+            if (!videoService.updateVideo(videoDto.favorite("2", vid))) {
+                throw new RuntimeException("video服务已降级");
+            }
         } else {
             throw new RuntimeException("you haven't liked the video");
         }
@@ -53,12 +57,18 @@ public class favoriteServiceImpl implements favoriteService {
             return new ArrayList<>();
         }
         List<videoDto> videos = videoService.getVideosByIds(nums);
+        if (videos.size() == 1 && videos.get(0).getId() == null) {
+            throw new RuntimeException("video服务已降级");
+        }
         for (videoDto video : videos) {
             if (favoriteDao.checkFavorite(id, video.getId()) == 1) {
                 video.setIs_favorite(true);
             }
-            if (followService.checkFollow(new followCond(id, video.getAuthor().getId())).equals("yes")) {
+            String msg = followService.checkFollow(new followCond(id, video.getAuthor().getId()));
+            if (msg.equals("yes")) {
                 video.getAuthor().setIs_follow(true);
+            } else if (!msg.equals("no")){
+                throw new RuntimeException("follow服务已降级");
             }
         }
         return videos;

@@ -1,4 +1,4 @@
-package com.example.utils;
+package com.douyin.utils;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;

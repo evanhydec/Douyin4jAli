@@ -1,10 +1,10 @@
-package com.example.service.follow.Impl;
+package com.douyin.service.follow.Impl;
 
-import com.example.DTO.Cond.followCond;
-import com.example.DTO.userDto;
-import com.example.dao.followDao;
-import com.example.service.follow.followService;
-import com.example.service.user.userService;
+import com.douyin.DTO.Cond.followCond;
+import com.douyin.DTO.userDto;
+import com.douyin.dao.followDao;
+import com.douyin.service.follow.followService;
+import com.douyin.service.user.userService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,18 +23,18 @@ public class followServiceImpl implements followService {
     @Override
     @Transactional
     public void follow(String type, Integer self, Integer target) {
-        try {
-            if (type.equals("1")) {
-                userService.updateUser(userDto.follow(target, 1, 0));
-                userService.updateUser(userDto.follow(self, 0, 1));
-                followDao.createFollow(new followCond(self, target));
-            } else {
-                userService.updateUser(userDto.follow(target, -1, 0));
-                userService.updateUser(userDto.follow(self, 0, -1));
-                followDao.deleteFollow(new followCond(self, target));
+        if (type.equals("1")) {
+            if (!userService.updateUser(userDto.follow(target, 1, 0)) ||
+                    !userService.updateUser(userDto.follow(self, 0, 1))) {
+                throw new RuntimeException("user服务已降级");
             }
-        } catch (Exception e) {
-            throw new RuntimeException("follow action wrong");
+            followDao.createFollow(new followCond(self, target));
+        } else {
+            if (!userService.updateUser(userDto.follow(target, -1, 0)) ||
+                    !userService.updateUser(userDto.follow(self, 0, -1))) {
+                throw new RuntimeException("user服务已降级");
+            }
+            followDao.deleteFollow(new followCond(self, target));
         }
     }
 
@@ -45,6 +45,9 @@ public class followServiceImpl implements followService {
             return new ArrayList<>();
         }
         List<userDto> follows = userService.getAll(followIds);
+        if (follows.size() == 1 && follows.get(0).getId() == 0) {
+            throw new RuntimeException("user服务已降级");
+        }
         if (uid == 0 || follows.size() == 0) {
             return follows;
         }
@@ -63,6 +66,9 @@ public class followServiceImpl implements followService {
             return new ArrayList<>();
         }
         List<userDto> followers = userService.getAll(followerIds);
+        if (followers.size() == 1 && followers.get(0).getId() == 0) {
+            throw new RuntimeException("user服务已降级");
+        }
         if (uid == 0 || followers.size() == 0) {
             return followers;
         }

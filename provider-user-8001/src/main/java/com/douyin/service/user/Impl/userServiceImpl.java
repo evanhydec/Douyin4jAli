@@ -1,12 +1,13 @@
-package com.example.service.user.Impl;
+package com.douyin.service.user.Impl;
 
-import com.example.DTO.Cond.followCond;
-import com.example.DTO.Cond.userCond;
-import com.example.DTO.userDto;
-import com.example.dao.userDao;
-import com.example.service.follow.followService;
-import com.example.utils.encryptUtil;
-import com.example.service.user.userService;
+import com.douyin.DTO.Cond.followCond;
+import com.douyin.DTO.Cond.userCond;
+import com.douyin.DTO.userDto;
+import com.douyin.dao.userDao;
+import com.douyin.service.follow.followService;
+import com.douyin.service.user.userService;
+import com.douyin.utils.encryptUtil;
+import com.douyin.utils.redisUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,7 +22,7 @@ public class userServiceImpl implements userService {
     private followService followService;
 
     @Autowired
-    private com.example.utils.redisUtil redisUtil;
+    private redisUtil redisUtil;
 
     @Override
     public userDto login(String name, String pwd) {
@@ -53,10 +54,15 @@ public class userServiceImpl implements userService {
             user = (userDto) o;
         } else {
             user = userDao.getUserDtoById(id);
-            redisUtil.set("user:" + id,user, 10 * 60);
+            redisUtil.set("user:" + id, user, 10 * 60);
         }
-        if (uid != null && followService.checkFollow(new followCond(uid,id)).equals("yes")) {
-            user.setIs_follow(true);
+        String msg = followService.checkFollow(new followCond(uid, id));
+        if (uid != null) {
+            if (msg.equals("yes")) {
+                user.setIs_follow(true);
+            } else if (!msg.equals("no")) {
+                throw new RuntimeException(msg);
+            }
         }
         return user;
     }

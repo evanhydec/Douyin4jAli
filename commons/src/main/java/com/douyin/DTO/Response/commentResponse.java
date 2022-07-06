@@ -1,6 +1,6 @@
-package com.example.DTO.Response;
+package com.douyin.DTO.Response;
 
-import com.example.DTO.commentDto;
+import com.douyin.DTO.commentDto;
 
 public class commentResponse {
     private Integer status_code;

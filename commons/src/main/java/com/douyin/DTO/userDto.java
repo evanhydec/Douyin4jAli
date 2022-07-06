@@ -1,4 +1,4 @@
-package com.example.DTO;
+package com.douyin.DTO;
 
 import java.io.Serializable;
 

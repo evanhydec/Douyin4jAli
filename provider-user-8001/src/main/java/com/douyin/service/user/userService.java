@@ -1,7 +1,7 @@
-package com.example.service.user;
+package com.douyin.service.user;
 
 
-import com.example.DTO.userDto;
+import com.douyin.DTO.userDto;
 
 import java.util.List;
 

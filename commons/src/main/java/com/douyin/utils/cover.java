@@ -1,4 +1,4 @@
-package com.example.utils;
+package com.douyin.utils;
 
 import org.bytedeco.javacv.FFmpegFrameGrabber;
 import org.bytedeco.javacv.Frame;

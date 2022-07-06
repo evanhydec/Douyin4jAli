@@ -1,6 +1,6 @@
 spring:
   application:
-    name: provider-user
+    name: provider-video
   cloud:
     nacos:
       config:

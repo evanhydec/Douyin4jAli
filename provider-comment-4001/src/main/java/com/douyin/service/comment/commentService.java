@@ -1,7 +1,7 @@
-package com.example.service.comment;
+package com.douyin.service.comment;
 
 
-import com.example.DTO.commentDto;
+import com.douyin.DTO.commentDto;
 
 import java.util.List;
 

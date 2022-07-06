@@ -1,11 +1,10 @@
-package com.example.controller;
+package com.douyin.controller;
 
-import com.example.DTO.Response.baseResponse;
-import com.example.DTO.Response.videoResponse;
-import com.example.DTO.videoDto;
-import com.example.service.video.videoService;
-import com.example.utils.stringUtils;
-import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
+import com.douyin.DTO.Response.baseResponse;
+import com.douyin.DTO.Response.videoResponse;
+import com.douyin.DTO.videoDto;
+import com.douyin.service.video.videoService;
+import com.douyin.utils.stringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -88,7 +87,6 @@ public class videoController {
     }
 
     @PostMapping("/video/list")
-    @HystrixCommand(fallbackMethod = "hystrixGetAll")
     public List<videoDto> getAll(
             @RequestBody
             List<Integer> nums
@@ -96,25 +94,13 @@ public class videoController {
         return service.getAll(nums);
     }
 
-    public List<videoDto> hystrixGetAll(
-            List<Integer> nums
-    ) {
-        return null;
-    }
 
     @PostMapping("/video/update")
-    @HystrixCommand(fallbackMethod = "hystrixUpdate")
-    public void update(
+    public boolean update(
             @RequestBody
             videoDto videoDto
     ) {
-        service.update(videoDto);
-    }
-
-    public void hystrixUpdate(
-            videoDto videoDto
-    ) {
-        return;
+        return service.update(videoDto);
     }
 
 }

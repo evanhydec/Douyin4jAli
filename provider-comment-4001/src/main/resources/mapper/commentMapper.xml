@@ -2,12 +2,12 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.example.dao.commentDao">
+<mapper namespace="com.douyin.dao.commentDao">
     <sql id="BASE_TABLE">
         comments
     </sql>
 
-    <insert id="createComment" parameterType="com.example.DTO.Cond.commentCond" useGeneratedKeys="true"
+    <insert id="createComment" parameterType="com.douyin.DTO.Cond.commentCond" useGeneratedKeys="true"
             keyProperty="commentId" keyColumn="id">
         INSERT INTO
         <include refid="BASE_TABLE"/>

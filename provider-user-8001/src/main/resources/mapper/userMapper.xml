@@ -2,7 +2,7 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.example.dao.userDao">
+<mapper namespace="com.douyin.dao.userDao">
 
     <sql id="BASE_TABLE">
         users
@@ -40,7 +40,7 @@
         WHERE uid = #{user.id}
     </update>
 
-    <resultMap id="user" type="com.example.DTO.userDto">
+    <resultMap id="user" type="com.douyin.DTO.userDto">
         <id property="id" column="uid"/>
         <result property="name" column="username"/>
         <result property="follow_count" column="followCount"/>

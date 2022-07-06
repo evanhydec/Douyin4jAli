@@ -1,6 +1,6 @@
-package com.example.DTO;
+package com.douyin.DTO;
 
-import com.example.POJO.video;
+import com.douyin.POJO.video;
 
 public class videoDto {
     private Integer id;

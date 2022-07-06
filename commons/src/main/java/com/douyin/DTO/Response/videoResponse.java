@@ -1,6 +1,6 @@
-package com.example.DTO.Response;
+package com.douyin.DTO.Response;
 
-import com.example.DTO.videoDto;
+import com.douyin.DTO.videoDto;
 
 import java.util.List;
 

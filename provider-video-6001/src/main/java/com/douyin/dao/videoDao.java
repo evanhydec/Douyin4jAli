@@ -1,8 +1,8 @@
-package com.example.dao;
+package com.douyin.dao;
 
-import com.example.DTO.Cond.videoCond;
-import com.example.DTO.videoDto;
-import com.example.POJO.video;
+import com.douyin.DTO.Cond.videoCond;
+import com.douyin.DTO.videoDto;
+import com.douyin.POJO.video;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 

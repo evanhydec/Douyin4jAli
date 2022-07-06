@@ -2,7 +2,7 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.example.dao.videoDao">
+<mapper namespace="com.douyin.dao.videoDao">
 
     <sql id="BASE_TABLE">
         videos
@@ -19,7 +19,7 @@
         </trim>
     </insert>
 
-    <update id="updateVideo" parameterType="com.example.DTO.videoDto">
+    <update id="updateVideo" parameterType="com.douyin.DTO.videoDto">
         UPDATE
         <include refid="BASE_TABLE"></include>
         <set>
@@ -35,7 +35,7 @@
     </update>
 
 
-    <resultMap id="videoDto" type="com.example.DTO.videoDto">
+    <resultMap id="videoDto" type="com.douyin.DTO.videoDto">
         <id property="id" column="id"/>
         <result property="play_url" column="playUrl"/>
         <result property="cover_url" column="coverUrl"/>
@@ -53,7 +53,7 @@
         userId = #{id}
     </select>
 
-    <resultMap id="video" type="com.example.POJO.video">
+    <resultMap id="video" type="com.douyin.POJO.video">
         <id property="id" column="id"/>
         <result property="user_id" column="userId"/>
         <result property="play_url" column="playUrl"/>

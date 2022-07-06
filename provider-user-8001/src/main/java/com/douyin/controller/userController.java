@@ -1,13 +1,12 @@
-package com.example.controller;
+package com.douyin.controller;
 
 
-import com.example.DTO.Response.baseResponse;
-import com.example.DTO.Response.userResponse;
-import com.example.DTO.userDto;
-import com.example.service.user.userService;
-import com.example.utils.jwt;
-import com.example.utils.stringUtils;
-import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
+import com.douyin.DTO.Response.baseResponse;
+import com.douyin.DTO.Response.userResponse;
+import com.douyin.DTO.userDto;
+import com.douyin.service.user.userService;
+import com.douyin.utils.jwt;
+import com.douyin.utils.stringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -86,7 +85,6 @@ public class userController {
     }
 
     @PostMapping("/getAll")
-    @HystrixCommand(fallbackMethod = "hystrixGetAll")
     public List<userDto> getAll(
             @RequestBody
             List<Integer> ids
@@ -94,12 +92,8 @@ public class userController {
         return service.getUsers(ids);
     }
 
-    public List<userDto> hystrixGetAll(List<Integer> ids) {
-        return null;
-    }
 
     @PostMapping("/update")
-    @HystrixCommand(fallbackMethod = "hystrixUpdate")
     public boolean update(
             @RequestBody
             userDto user
@@ -107,14 +101,8 @@ public class userController {
         return service.update(user);
     }
 
-    public boolean hystrixUpdate(
-            userDto user
-    ) {
-        return false;
-    }
 
     @PostMapping("/get")
-    @HystrixCommand(fallbackMethod = "hystrixGet")
     public userDto get(
             @RequestBody
             Integer id
@@ -122,8 +110,5 @@ public class userController {
         return service.getUser(id,null);
     }
 
-    public userDto hystrixGet(Integer id) {
-        return null;
-    }
 
 }

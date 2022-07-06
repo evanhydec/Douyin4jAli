@@ -1,4 +1,4 @@
-package com.example.POJO;
+package com.douyin.POJO;
 
 public class video {
     private Integer id;

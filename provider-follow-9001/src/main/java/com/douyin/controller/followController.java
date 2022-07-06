@@ -1,12 +1,11 @@
-package com.example.controller;
+package com.douyin.controller;
 
-import com.example.DTO.Cond.followCond;
-import com.example.DTO.Response.baseResponse;
-import com.example.DTO.Response.usersResponse;
-import com.example.DTO.userDto;
-import com.example.service.follow.followService;
-import com.example.utils.stringUtils;
-import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
+import com.douyin.DTO.Cond.followCond;
+import com.douyin.DTO.Response.baseResponse;
+import com.douyin.DTO.Response.usersResponse;
+import com.douyin.DTO.userDto;
+import com.douyin.service.follow.followService;
+import com.douyin.utils.stringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -73,7 +72,6 @@ public class followController {
     }
 
     @PostMapping("/check")
-    @HystrixCommand(fallbackMethod = "hystrixCheck")
     public String check(
             @RequestBody
             followCond followCond
@@ -83,10 +81,6 @@ public class followController {
         }  else {
             return "no";
         }
-    }
-
-    public String hystrixCheck(followCond followCond) {
-        return "no";
     }
 
 }

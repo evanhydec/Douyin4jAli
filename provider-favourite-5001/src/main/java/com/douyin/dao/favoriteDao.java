@@ -1,4 +1,4 @@
-package com.example.dao;
+package com.douyin.dao;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;

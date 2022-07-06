@@ -1,14 +1,12 @@
-package com.example.controller;
+package com.douyin.controller;
 
 
-import com.example.DTO.Cond.favouriteCond;
-import com.example.DTO.Cond.followCond;
-import com.example.DTO.Response.baseResponse;
-import com.example.DTO.Response.videoResponse;
-import com.example.DTO.videoDto;
-import com.example.service.favorite.favoriteService;
-import com.example.utils.stringUtils;
-import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
+import com.douyin.DTO.Cond.favouriteCond;
+import com.douyin.DTO.Response.baseResponse;
+import com.douyin.DTO.Response.videoResponse;
+import com.douyin.DTO.videoDto;
+import com.douyin.service.favorite.favoriteService;
+import com.douyin.utils.stringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -66,7 +64,6 @@ public class favoriteController {
     }
 
     @PostMapping("/check")
-    @HystrixCommand(fallbackMethod = "hystrixCheck")
     public String check(
             @RequestBody
             favouriteCond cond
@@ -78,7 +75,4 @@ public class favoriteController {
         }
     }
 
-    public String hystrixCheck(favouriteCond cond) {
-        return "服务异常，熔断";
-    }
 }

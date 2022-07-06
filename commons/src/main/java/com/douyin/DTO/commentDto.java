@@ -1,6 +1,6 @@
-package com.example.DTO;
+package com.douyin.DTO;
 
-import com.example.utils.stringUtils;
+import com.douyin.utils.stringUtils;
 
 import java.math.BigInteger;
 import java.util.Map;

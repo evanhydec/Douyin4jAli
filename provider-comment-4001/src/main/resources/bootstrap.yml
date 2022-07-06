@@ -1,6 +1,6 @@
 spring:
   application:
-    name: provider-favourite
+    name: provider-comment
   cloud:
     nacos:
       config:

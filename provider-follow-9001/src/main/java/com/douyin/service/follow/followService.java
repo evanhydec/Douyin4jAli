@@ -1,8 +1,8 @@
-package com.example.service.follow;
+package com.douyin.service.follow;
 
 
-import com.example.DTO.Cond.followCond;
-import com.example.DTO.userDto;
+import com.douyin.DTO.Cond.followCond;
+import com.douyin.DTO.userDto;
 
 import java.util.List;
 

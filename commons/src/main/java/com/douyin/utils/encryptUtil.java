@@ -1,4 +1,4 @@
-package com.example.utils;
+package com.douyin.utils;
 
 import javax.crypto.Cipher;
 import javax.crypto.SecretKey;

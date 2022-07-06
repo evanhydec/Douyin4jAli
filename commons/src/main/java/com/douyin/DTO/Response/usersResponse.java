@@ -1,6 +1,6 @@
-package com.example.DTO.Response;
+package com.douyin.DTO.Response;
 
-import com.example.DTO.userDto;
+import com.douyin.DTO.userDto;
 
 import java.util.List;
 

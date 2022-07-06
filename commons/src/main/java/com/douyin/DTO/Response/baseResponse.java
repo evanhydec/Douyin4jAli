@@ -1,4 +1,4 @@
-package com.example.DTO.Response;
+package com.douyin.DTO.Response;
 
 public class baseResponse {
     private Integer status_code;

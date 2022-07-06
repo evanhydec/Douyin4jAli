@@ -1,9 +1,8 @@
-package com.example.service.favorite;
+package com.douyin.service.favorite;
 
 
-import com.example.DTO.Cond.favouriteCond;
-import com.example.DTO.Cond.followCond;
-import com.example.DTO.videoDto;
+import com.douyin.DTO.Cond.favouriteCond;
+import com.douyin.DTO.videoDto;
 
 import java.util.List;
 

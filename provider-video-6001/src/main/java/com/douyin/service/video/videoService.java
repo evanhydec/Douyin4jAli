@@ -1,6 +1,6 @@
-package com.example.service.video;
+package com.douyin.service.video;
 
-import com.example.DTO.videoDto;
+import com.douyin.DTO.videoDto;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
@@ -10,5 +10,5 @@ public interface videoService {
     List<videoDto> list(Integer uid, Integer token);
     List<videoDto> feed(Long time,Integer uid);
     List<videoDto> getAll(List<Integer> ids);
-    void update(videoDto videoDto);
+    boolean update(videoDto videoDto);
 }

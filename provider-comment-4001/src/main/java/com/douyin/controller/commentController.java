@@ -1,11 +1,11 @@
-package com.example.controller;
+package com.douyin.controller;
 
 
-import com.example.DTO.Response.commentResponse;
-import com.example.DTO.Response.commentsResponse;
-import com.example.DTO.commentDto;
-import com.example.service.comment.commentService;
-import com.example.utils.stringUtils;
+import com.douyin.DTO.Response.commentResponse;
+import com.douyin.DTO.Response.commentsResponse;
+import com.douyin.DTO.commentDto;
+import com.douyin.service.comment.commentService;
+import com.douyin.utils.stringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

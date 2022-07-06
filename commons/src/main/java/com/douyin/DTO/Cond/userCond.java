@@ -1,4 +1,4 @@
-package com.example.DTO.Cond;
+package com.douyin.DTO.Cond;
 
 public class userCond {
     private Integer id;

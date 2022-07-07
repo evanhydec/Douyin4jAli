@@ -11,6 +11,7 @@ import com.douyin.service.follow.followService;
 import com.douyin.service.user.userService;
 import com.douyin.service.video.videoService;
 import com.douyin.utils.stringUtils;
+import io.seata.spring.annotation.GlobalTransactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -36,7 +37,7 @@ public class commentServiceImpl implements commentService {
     private followService followService;
 
     @Override
-    @Transactional
+    @GlobalTransactional
     public commentDto action(String type, Integer uid, Integer vid, String content, Integer cid) {
         userDto user = userService.getUser(uid);
         if (user != null && user.getId() == 0) {

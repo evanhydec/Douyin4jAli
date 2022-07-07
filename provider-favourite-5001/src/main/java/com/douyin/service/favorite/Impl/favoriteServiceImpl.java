@@ -7,6 +7,7 @@ import com.douyin.dao.favoriteDao;
 import com.douyin.service.favorite.favoriteService;
 import com.douyin.service.follow.followService;
 import com.douyin.service.video.videoService;
+import io.seata.spring.annotation.GlobalTransactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,7 +28,7 @@ public class favoriteServiceImpl implements favoriteService {
     private followService followService;
 
     @Override
-    @Transactional
+    @GlobalTransactional
     public void action(Integer vid, String type, Integer uid) {
         if (type.equals("1")) {
             if (favoriteDao.checkFavorite(uid, vid) == 0) {

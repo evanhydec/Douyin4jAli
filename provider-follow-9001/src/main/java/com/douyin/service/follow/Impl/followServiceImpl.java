@@ -5,6 +5,7 @@ import com.douyin.DTO.userDto;
 import com.douyin.dao.followDao;
 import com.douyin.service.follow.followService;
 import com.douyin.service.user.userService;
+import io.seata.spring.annotation.GlobalTransactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,7 +22,7 @@ public class followServiceImpl implements followService {
     private userService userService;
 
     @Override
-    @Transactional
+    @GlobalTransactional
     public void follow(String type, Integer self, Integer target) {
         if (type.equals("1")) {
             if (!userService.updateUser(userDto.follow(target, 1, 0)) ||
